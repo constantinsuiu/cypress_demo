@@ -1,0 +1,14 @@
+[
+    {
+        "type": "valid",
+        "username": "standard_user"
+    },
+    {
+        "type": "invalid",
+        "username": "invalid"
+    },
+    {
+        "type": "lockedOut",
+        "username": "locked_out_user"
+    }
+]
