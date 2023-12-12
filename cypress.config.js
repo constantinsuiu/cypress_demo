@@ -13,6 +13,7 @@ module.exports = defineConfig({
           return null;
         }
       });
-    }
+    },
+    chromeWebSecurity: false
   }
 });

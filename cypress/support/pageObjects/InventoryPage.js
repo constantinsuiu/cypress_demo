@@ -4,7 +4,7 @@ class InventoryPage {
     this.inventoryItems = '.inventory_item';
     this.itemsName = '.inventory_item_name';
     this.itemsPrice = '.inventory_item_price';
-    this.removeFromCard = '[data-test^="remove-sauce-labs"]';
+    this.removeFromCard = '[data-test^="remove-"]';
     this.shippingCartBadge = '.shopping_cart_badge';
     this.sortDropdown = '[data-test="product_sort_container"]';
     this.title = '.title';
@@ -13,23 +13,26 @@ class InventoryPage {
 
   validateSorting(sortingOption, sortFn) {
     const mapFn = ($items) => [...$items].map(item => item.innerText);
-
-    cy.get(this.itemsName)
+    const items = ['hilo', 'lohi'].includes(sortingOption) ? this.itemsPrice : this.itemsName;
+    
+    cy.get(items)
       .then(mapFn)
-      .then(unsertedItemNames => {
-        const expectedSortedItemNames = [...unsertedItemNames.sort(sortFn)];
+      .then(unsortedItems => {
+        const expectedSortedItems = [...unsortedItems.map(item => item.replace('$', '')).sort(sortFn)];
 
-        ['hilo', 'za'].includes(sortingOption) && expectedSortedItemNames.reverse();
+        ['hilo', 'za'].includes(sortingOption) && expectedSortedItems.reverse();
 
         cy.get(this.sortDropdown)
           .get('option')
           .should('have.length', 4);
         cy.get(this.sortDropdown)
           .select(sortingOption);
-        cy.get(this.itemsName)
+        cy.get(items)
           .then(mapFn)
-          .should(sortedItemNames => {
-            expect(sortedItemNames).to.deep.equal(expectedSortedItemNames);
+          .then(sortedItems => {
+            sortedItems = sortedItems.map(item => item.replace('$', ''));
+            
+            expect(sortedItems).to.deep.equal(expectedSortedItems);
           });
       });
   }

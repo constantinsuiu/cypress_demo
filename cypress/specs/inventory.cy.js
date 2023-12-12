@@ -8,9 +8,14 @@ const validUser = users.find(user => user.type === 'valid');
 
 describe('Validate inventory page functionality', () => {
   beforeEach(() => {
-    cy.visit('', {failOnStatusCode: false});
-    loginPage.login(validUser.username, constants.password);
-    cy.get(inventoryPage.title).should('have.text', 'Products');
+    cy.session('login', () => {
+      cy.visit('');
+      loginPage.login(validUser.username, constants.password);
+      cy
+        .get(inventoryPage.title)
+        .should('have.text', 'Products');
+    });
+    cy.visit('/inventory.html', {failOnStatusCode: false});
   });
 
   it('Validate Z to A sorting', () => {
@@ -22,7 +27,7 @@ describe('Validate inventory page functionality', () => {
   });
 
   it('Validate Price High - Low sorting', () => {
-    const sortFn = (a, b) => parseFloat(b) - parseFloat(a);
+    const sortFn = (a, b) => parseFloat(a) - parseFloat(b);
     inventoryPage.validateSorting('hilo', sortFn);
   });
 
@@ -31,30 +36,42 @@ describe('Validate inventory page functionality', () => {
     inventoryPage.validateSorting('lohi', sortFn);
   });
 
-  // it('Validate add to cart', () => {
-  //   let itemsInCartCount = 0;
+  it('Validate add to cart', () => {
+    let itemsInCartCount = 0;
 
-  //   cy.get(inventoryPage.inventoryItems).then((items) => {
-  //     const selectedItem =  Cypress._.random(0, items - 1);
+    cy.get(inventoryPage.inventoryItems).then((items) => {
+      const selectedItem =  Cypress._.random(0, items.length - 1);
 
-  //     // cy.get(inventoryPage.inventoryItems).eq(selectedItem).then((item) => {
-  //     //   item.get(inventoryPage.addToCartButton).click();
-  //     //   itemsInCartCount++;
-  //     //   item.get(inventoryPage.addToCartButton).should('not.exist');
-  //     //   item.get(inventoryPage.removeFromCard).should('exist');
-  //     //   item.get(inventoryPage.shippingCartBadge).should('have.text', itemsInCartCount);
-  //     //   item.get(inventoryPage.removeFromCard).click();
-  //     //   itemsInCartCount--;
-  //     //   item.get(inventoryPage.shippingCartBadge).should('not.exist');
-  //     // });
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.addToCartButton).click();
-  //     itemsInCartCount++;
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.addToCartButton).should('not.exist');
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.removeFromCard).should('exist');
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.shippingCartBadge).should('have.text', itemsInCartCount);
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.removeFromCard).click();
-  //     itemsInCartCount--;
-  //     cy.get(inventoryPage.inventoryItems).eq(selectedItem).get(inventoryPage.shippingCartBadge).should('not.exist');
-  //   });
-  // });
+      cy.wrap(items.eq(selectedItem)).then((item) => {
+        //Add item to cart
+        cy.wrap(item)
+          .find(inventoryPage.addToCartButton)
+          .click()
+          .should('not.exist');
+        itemsInCartCount++;
+
+        //Check remove from cart button exists
+        cy.wrap(item)
+          .find(inventoryPage.removeFromCard)
+          .should('exist');
+
+        //Check cart icon
+        cy
+          .get(inventoryPage.shippingCartBadge)
+          .should('have.text', itemsInCartCount);
+        
+        //Remove item from cart
+        cy.wrap(item)
+          .find(inventoryPage.removeFromCard)
+          .click()
+          .should('not.exist');
+        itemsInCartCount--;
+
+        //Cehck cart icon
+        cy
+          .get(inventoryPage.shippingCartBadge)
+          .should('not.exist');
+      });
+    });
+  });
 });

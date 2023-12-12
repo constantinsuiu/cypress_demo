@@ -6,7 +6,7 @@ const loginPage = new LoginPage();
 
 describe('Validating the login functionality with different users', () => {
   beforeEach(() => {
-    cy.visit('',  {failOnStatusCode: false});
+    cy.visit('');
     cy.title().should('eq', 'Swag Labs');
   });
 
