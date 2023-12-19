@@ -11,9 +11,7 @@ describe('Validate inventory page functionality', () => {
     cy.session('login', () => {
       cy.visit('');
       loginPage.login(validUser.username, constants.password);
-      cy
-        .get(inventoryPage.title)
-        .should('have.text', 'Products');
+      inventoryPage.title().should('have.text', 'Products');
     });
     cy.visit('/inventory.html', {failOnStatusCode: false});
   });
@@ -39,38 +37,16 @@ describe('Validate inventory page functionality', () => {
   it('Validate add to cart', () => {
     let itemsInCartCount = 0;
 
-    cy.get(inventoryPage.inventoryItems).then((items) => {
-      const selectedItem =  Cypress._.random(0, items.length - 1);
+    inventoryPage.inventoryItems().then(($items) => {
+      const selectedItem =  Cypress._.random(0, $items.length - 1);
 
-      cy.wrap(items.eq(selectedItem)).then((item) => {
-        //Add item to cart
-        cy.wrap(item)
-          .find(inventoryPage.addToCartButton)
-          .click()
-          .should('not.exist');
+      cy.wrap($items.eq(selectedItem)).then(($item) => {
+        inventoryPage.addToCart($item);
         itemsInCartCount++;
-
-        //Check remove from cart button exists
-        cy.wrap(item)
-          .find(inventoryPage.removeFromCard)
-          .should('exist');
-
-        //Check cart icon
-        cy
-          .get(inventoryPage.shippingCartBadge)
-          .should('have.text', itemsInCartCount);
-        
-        //Remove item from cart
-        cy.wrap(item)
-          .find(inventoryPage.removeFromCard)
-          .click()
-          .should('not.exist');
+        inventoryPage.shippingCartBadge().should('have.text', itemsInCartCount);
+        inventoryPage.removeFromCard($item);
         itemsInCartCount--;
-
-        //Cehck cart icon
-        cy
-          .get(inventoryPage.shippingCartBadge)
-          .should('not.exist');
+        inventoryPage.shippingCartBadge().should('not.exist');
       });
     });
   });

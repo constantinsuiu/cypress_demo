@@ -17,11 +17,11 @@ describe('Validating the login functionality with different users', () => {
       switch (user.type) {
         case 'invalid':
         case 'lockedOut':
-          cy.get(loginPage.errorMessage).should('have.text', constants.loginErrors[user.type]);
-          cy.get(loginPage.userNameField).next().should('be.visible').and('have.attr', 'data-icon');
-          cy.get(loginPage.passwordField).next().should('be.visible').and('have.attr', 'data-icon');
-          cy.get(loginPage.errorMessage).get(loginPage.errorMessageCloseButton).click();
-          cy.get(loginPage.errorMessage).should('not.exist');
+          loginPage.errorMessage().should('have.text', constants.loginErrors[user.type]);
+          loginPage.userNameField().next().should('be.visible').and('have.attr', 'data-icon');
+          loginPage.passwordField().next().should('be.visible').and('have.attr', 'data-icon');
+          loginPage.errorMessageCloseButton().click();
+          loginPage.errorMessage().should('not.exist');
           break;
         case 'valid':
           cy.url().should('include', 'inventory');
