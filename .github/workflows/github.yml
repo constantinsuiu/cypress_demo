@@ -15,7 +15,7 @@ jobs:
       - run: npm install -g eslint
       - run: eslint . --ext .js,.jsx,.ts,.tsx
 
-  run-wdio:
+  run-cypress:
     needs: eslint
     runs-on: ubuntu-latest
     steps:
