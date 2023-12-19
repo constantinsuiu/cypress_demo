@@ -1,16 +1,46 @@
 class CartPage {
-  constructor() {
-    this.cartItems = '.cart_item';
-    this.cartItemName = '.inventory_item_name';
-    this.checkoutbutton = '[data-test="checkout"]';
-    this.continueButton = '[data-test="continue"]';
-    this.firstNameInput = '[data-test="firstName"]';
-    this.lastNameInput = '[data-test="lastName"]';
-    this.postalCodeInput = '[data-test="postalCode"]';
-    this.shoppingCart = '.shopping_cart_link';
-    this.subTotalLabel = '.summary_subtotal_label';
-    this.taxLabel = '.summary_tax_label';
-    this.totalLabel = '.summary_total_label';
+  cartItems() {
+    return cy.get('.cart_item');
+  }
+  
+  checkoutButton() {
+    return cy.get('[data-test="checkout"]');
+  }
+  
+  continueButton() {
+    return cy.get('[data-test="continue"]');
+  }
+  
+  firstNameInput() {
+    return cy.get('[data-test="firstName"]');
+  }
+
+  getCartItemName($item) {
+    return $item.find('.inventory_item_name');
+  }
+  
+  lastNameInput() {
+    return cy.get('[data-test="lastName"]');
+  }
+  
+  postalCodeInput() {
+    return cy.get('[data-test="postalCode"]');
+  }
+  
+  shoppingCart() {
+    return cy.get('.shopping_cart_link');
+  }
+  
+  subTotalLabel() {
+    return cy.get('.summary_subtotal_label');
+  }
+  
+  taxLabel() {
+    return cy.get('.summary_tax_label');
+  }
+  
+  totalLabel() {
+    return cy.get('.summary_total_label');
   }
 
 }

@@ -1,39 +1,63 @@
 class InventoryPage {
-  constructor() {
-    this.addToCartButton = '[data-test^="add-to-cart"]';
-    this.inventoryItems = '.inventory_item';
-    this.itemsName = '.inventory_item_name ';
-    this.itemsPrice = '.inventory_item_price';
-    this.removeFromCard = '[data-test^="remove-"]';
-    this.shippingCartBadge = '.shopping_cart_badge';
-    this.sortDropdown = '[data-test="product_sort_container"]';
-    this.title = '.title';
+  addToCart(parentElement) {
+    return cy.wrap(parentElement)
+      .find('[data-test^="add-to-cart"]')
+      .click()
+      .should('not.exist');
+  }
+
+  inventoryItems() {
+    return cy.get('.inventory_item');
+  }
+
+  getItemName($item) {
+    const selector = '.inventory_item_name ';
+    return $item ? $item.find(selector) : cy.get(selector);
+  }
+
+  getItemPrice($item) {
+    const selector = '.inventory_item_price';
+    return $item ? $item.find(selector): cy.get(selector);
+  }
+
+  removeFromCard(parentElement) {
+    return cy.wrap(parentElement)
+      .find('[data-test^="remove-"]')
+      .click()
+      .should('not.exist');
+  }
+
+  shippingCartBadge() {
+    return cy.get('.shopping_cart_badge');
+  }
+
+  sortDropdown() {
+    return cy.get('[data-test="product_sort_container"]');
+  }
+
+  title() {
+    return cy.get('.title');
   }
 
 
   validateSorting(sortingOption, sortFn) {
     const mapFn = ($items) => [...$items].map(item => item.innerText);
-    const items = ['hilo', 'lohi'].includes(sortingOption) ? this.itemsPrice : this.itemsName;
+    const items = ['hilo', 'lohi'].includes(sortingOption) ? this.getItemPrice : this.getItemName;
+    let expectedSortedItems;
     
-    cy.get(items)
+    items()
       .then(mapFn)
       .then(unsortedItems => {
-        const expectedSortedItems = [...unsortedItems.map(item => item.replace('$', '')).sort(sortFn)];
-
+        expectedSortedItems = [...unsortedItems.map(item => item.replace('$', '')).sort(sortFn)];
         ['hilo', 'za'].includes(sortingOption) && expectedSortedItems.reverse();
-
-        cy.get(this.sortDropdown)
-          .get('option')
-          .should('have.length', 4);
-        cy.get(this.sortDropdown)
-          .select(sortingOption);
-        cy.get(items)
-          .then(mapFn)
-          .then(sortedItems => {
-            sortedItems = sortedItems.map(item => item.replace('$', ''));
-            
-            expect(sortedItems).to.deep.equal(expectedSortedItems);
-          });
+      });
+    this.sortDropdown().get('option').should('have.length', 4);
+    this.sortDropdown().select(sortingOption);
+    items()
+      .then(mapFn)
+      .then(sortedItems => {
+        sortedItems = sortedItems.map(item => item.replace('$', ''));
+        expect(sortedItems).to.deep.equal(expectedSortedItems);
       });
   }
 }

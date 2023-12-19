@@ -1,17 +1,31 @@
 class LoginPage {
-  constructor() {
-    this.errorMessage = '[data-test="error"]';
-    this.errorMessageCloseButton = '.error-button';
-    this.loginButton = '[data-test="login-button"]';
-    this.passwordField = '[data-test="password"]';
-    this.userNameField = '[data-test="username"]';
+
+  errorMessage() {
+    return cy.get('[data-test="error"]');
+  }
+
+  errorMessageCloseButton() {
+    return this.errorMessage().get('.error-button');
+  } 
+
+
+  loginButton() {
+    return cy.get('[data-test="login-button"]');
+  }
+
+  passwordField() {
+    return cy.get('[data-test="password"]');
+  }
+
+  userNameField() {
+    return cy.get('[data-test="username"]');
   }
 
 
   login(userName, password) {
-    cy.get(this.userNameField).type(userName);
-    cy.get(this.passwordField).type(password);
-    cy.get(this.loginButton).click();
+    this.userNameField().type(userName);
+    this.passwordField().type(password);
+    this.loginButton().click();
   }
 }
 
