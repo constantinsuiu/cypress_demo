@@ -1,16 +1,25 @@
 pipeline {
-  agent {
-    // this image provides everything needed to run Cypress
-    docker {
-      image 'cypress/base:20.9.0'
-    }
-  }
+    agent { label 'mac-qa' }
 
-  stages {
-    stage('build and test') {
-      steps {
-        sh 'npx cypress run'
-      }
+    tools {
+        nodejs 'latest'
+        jdk 'latest'
     }
-  }
+    stages {
+        stage('Install packages') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Run tests') {
+            steps {
+              sh 'npx cypress run'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'video/'
+        }
+    }
 }
