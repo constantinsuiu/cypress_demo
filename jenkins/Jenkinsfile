@@ -1,6 +1,10 @@
 pipeline {
     agent { label 'mac-qa' }
 
+    options {
+        ansiColor('xterm')
+    }
+
     tools {
         nodejs 'latest'
         jdk 'latest'
