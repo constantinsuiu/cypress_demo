@@ -1,0 +1,24 @@
+pipeline {
+    agent { label 'mac-qa' }
+
+    options {
+        ansiColor('xterm')
+    }
+
+    tools {
+        nodejs 'latest'
+        jdk 'latest'
+    }
+    stages {
+        stage('Install packages') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Run tests') {
+            steps {
+              sh 'npx cypress run'
+            }
+        }
+    }
+}
