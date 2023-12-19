@@ -2,7 +2,7 @@ class InventoryPage {
   constructor() {
     this.addToCartButton = '[data-test^="add-to-cart"]';
     this.inventoryItems = '.inventory_item';
-    this.itemsName = '.inventory_item_name';
+    this.itemsName = '.inventory_item_name ';
     this.itemsPrice = '.inventory_item_price';
     this.removeFromCard = '[data-test^="remove-"]';
     this.shippingCartBadge = '.shopping_cart_badge';
