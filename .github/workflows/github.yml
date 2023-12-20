@@ -32,7 +32,7 @@ jobs:
         with:
           browser: chrome
 
-   run-cypress-firefox:
+  run-cypress-firefox:
     needs: eslint
     runs-on: ubuntu-latest
     steps:
