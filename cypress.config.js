@@ -5,6 +5,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: 'https://www.saucedemo.com',
     specPattern: 'cypress/specs/**/*.cy.js',
+    experimentalWebKitSupport: true,
     viewportHeight: 1800,
     viewportWidth: 2500,
     setupNodeEvents(on) {
