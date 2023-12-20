@@ -1,7 +1,7 @@
-import InventoryPage from '../support/pageObjects/InventoryPage';
-import LoginPage from '../support/pageObjects/LoginPage';
-import constants from '../support/constants';
-import users from '../fixtures/users.json';
+import InventoryPage from '../../support/pageObjects/InventoryPage';
+import LoginPage from '../../support/pageObjects/LoginPage';
+import constants from '../../support/constants';
+import users from '../../fixtures/users.json';
 const inventoryPage = new InventoryPage();
 const loginPage = new LoginPage();
 const validUser = users.find(user => user.type === 'valid');
