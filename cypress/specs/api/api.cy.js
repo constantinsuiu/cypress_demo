@@ -7,10 +7,7 @@ describe('Validate GET /users endpoint with path/query params', () => {
 
     endpoint.setQueryParams({page: 2});
     cy.request(endpoint.fullUrl).as('getUsers');
-    cy.get('@getUsers').should((response) => {
-      expect(response.status).to.eq(200);
-      expect(endpoint.validateSchema(response.body)).to.be.true;
-    });
+    validateResponse('@getUsers', endpoint);
   });
 
   it('Validate GET /users/:userId endpoint', () => {
@@ -18,9 +15,13 @@ describe('Validate GET /users endpoint with path/query params', () => {
 
     endpoint.setPathParams({userId: 2});
     cy.request(endpoint.fullUrl).as('getUser');
-    cy.get('@getUser').should((response) => {
-      expect(response.status).to.eq(200);
-      expect(endpoint.validateSchema(response.body)).to.be.true;
-    });
+    validateResponse('@getUser', endpoint);
   });
 });
+
+function validateResponse(tag, endpoint) {
+  cy.get(tag).should((response) => {
+    expect(response.status).to.eq(200);
+    expect(endpoint.validateSchema(response.body)).to.be.true;
+  });
+}
