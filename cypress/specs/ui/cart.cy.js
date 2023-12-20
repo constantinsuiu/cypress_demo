@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import * as faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import CartPage from '../../support/pageObjects/CartPage';
 import InventoryPage from '../../support/pageObjects/InventoryPage';
 import LoginPage from '../../support/pageObjects/LoginPage';
@@ -27,7 +27,7 @@ describe('Validate inventory page functionality', () => {
     inventoryPage.inventoryItems().then(($items) => {
       const selectedItem =  Cypress._.random(0, $items.length - 1);
 
-      cy.wrap($items.eq(selectedItem)).then(($item) => {
+      cy.wrap($items).eq(selectedItem).then(($item) => {
         //Add item to cart
         inventoryPage.addToCart($item);
         itemsInCartCount++;
@@ -39,17 +39,20 @@ describe('Validate inventory page functionality', () => {
         const taxAmount = parseFloat(+(Math.round(price / constants.taxAmount + 'e+2')  + 'e-2')).toFixed(2);
         const total = parseFloat(price) + parseFloat(taxAmount);
 
+        //check shopping cart
         cartPage.shoppingCart().click();
         cartPage.cartItems().should('exist').should('have.length', itemsInCartCount);
         cartPage.getCartItemName(cartPage.cartItems().eq(0)).should('have.text', text);
         cartPage.checkoutButton().click();
-        cartPage.firstNameInput().type(faker.faker.person.firstName());
-        cartPage.lastNameInput().type(faker.faker.person.lastName());
-        cartPage.postalCodeInput().type(faker.faker.location.zipCode());
+        cartPage.firstNameInput().type(faker.person.firstName());
+        cartPage.lastNameInput().type(faker.person.lastName());
+        cartPage.postalCodeInput().type(faker.location.zipCode());
         cartPage.continueButton().click();
         cartPage.subTotalLabel().should('contain', price);
         cartPage.taxLabel().should('contain', taxAmount);
         cartPage.totalLabel().should('contain', `${total.toFixed(2)}`);
+        cartPage.finishButton().click();
+        cartPage.thankYouHeader().should('have.text', 'Thank you for your order!');
       });
     });
   });

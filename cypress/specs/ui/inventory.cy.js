@@ -40,7 +40,7 @@ describe('Validate inventory page functionality', () => {
     inventoryPage.inventoryItems().then(($items) => {
       const selectedItem =  Cypress._.random(0, $items.length - 1);
 
-      cy.wrap($items.eq(selectedItem)).then(($item) => {
+      cy.wrap($items).eq(selectedItem).then(($item) => {
         inventoryPage.addToCart($item);
         itemsInCartCount++;
         inventoryPage.shippingCartBadge().should('have.text', itemsInCartCount);
