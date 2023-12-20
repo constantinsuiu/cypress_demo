@@ -15,6 +15,10 @@ class CartPage {
     return cy.get('[data-test="firstName"]');
   }
 
+  finishButton() {
+    return cy.get('[data-test="finish"]');
+  }
+
   getCartItemName($item) {
     return $item.find('.inventory_item_name');
   }
@@ -37,6 +41,10 @@ class CartPage {
   
   taxLabel() {
     return cy.get('.summary_tax_label');
+  }
+
+  thankYouHeader() {
+    return cy.get('.complete-header');
   }
   
   totalLabel() {
