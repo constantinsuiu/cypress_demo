@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Run tests -- api') {
             steps {
-              sh 'npx cypress run --browser chrome --spec cypress/specs/api/**.cy.js'
+              sh 'npx cypress run --spec cypress/specs/api/**.cy.js'
             }
         }
     }
