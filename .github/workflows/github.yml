@@ -25,9 +25,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: |
-          npm install
       - uses: cypress-io/github-action@v6
         with:
           browser: chrome
@@ -42,9 +39,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: |
-          npm install
       - uses: cypress-io/github-action@v6
         with:
           browser: firefox
