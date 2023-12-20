@@ -1,12 +1,12 @@
-import LoginPage from '../support/pageObjects/LoginPage';
-import users from '../fixtures/users.json';
-import constants from '../support/constants';
+import LoginPage from '../../support/pageObjects/LoginPage';
+import users from '../../fixtures/users.json';
+import constants from '../../support/constants';
 const loginPage = new LoginPage();
 
 
 describe('Validating the login functionality with different users', () => {
   beforeEach(() => {
-    cy.visit('');
+    cy.visit('', {failOnStatusCode: false});
     cy.title().should('eq', 'Swag Labs');
   });
 

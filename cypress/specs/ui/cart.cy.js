@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 import * as faker from '@faker-js/faker';
-import CartPage from '../support/pageObjects/CartPage';
-import InventoryPage from '../support/pageObjects/InventoryPage';
-import LoginPage from '../support/pageObjects/LoginPage';
-import constants from '../support/constants';
-import users from '../fixtures/users.json';
+import CartPage from '../../support/pageObjects/CartPage';
+import InventoryPage from '../../support/pageObjects/InventoryPage';
+import LoginPage from '../../support/pageObjects/LoginPage';
+import constants from '../../support/constants';
+import users from '../../fixtures/users.json';
 const cartPage = new CartPage();
 const inventoryPage = new InventoryPage();
 const loginPage = new LoginPage();

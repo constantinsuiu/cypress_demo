@@ -8,24 +8,53 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - run: npm install -g eslint
       - run: eslint . --ext .js,.jsx,.ts,.tsx
 
-  run-cypress:
+  run-cypress-chrome:
     needs: eslint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: |
-          npm install
       - uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          spec: cypress/specs/ui/**.cy.js
+
+  run-cypress-firefox:
+    needs: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: cypress-io/github-action@v6
+        with:
+          browser: firefox
+          spec: cypress/specs/ui/**.cy.js
+  
+  run-cypress-api:
+    needs: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: cypress-io/github-action@v6
+        with:
+          spec: cypress/specs/api/**.cy.js

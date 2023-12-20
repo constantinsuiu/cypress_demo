@@ -15,9 +15,14 @@ pipeline {
                 sh 'npm install'
             }
         }
-        stage('Run tests') {
+        stage('Run tests -- chrome') {
             steps {
-              sh 'npx cypress run'
+              sh 'npx cypress run --browser chrome --spec cypress/specs/ui/**.cy.js'
+            }
+        }
+        stage('Run tests -- api') {
+            steps {
+              sh 'npx cypress run --spec cypress/specs/api/**.cy.js'
             }
         }
     }
