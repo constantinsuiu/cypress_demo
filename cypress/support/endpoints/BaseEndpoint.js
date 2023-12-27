@@ -11,10 +11,10 @@ class BaseEndpoint {
   }
 
   get fullUrl () {
-    this.baseUrl = this.baseUrl.endsWith('/') && this.path.startsWith('/') ? this.baseUrl.slice(0, -1) : this.baseUrl;
-    let url = !this.path ? this.baseUrl : this.path.startsWith('/') ? `${this.baseUrl}${this.path}` : `${this.baseUrl}/${this.path}`;
+    const pattern = /([^:]\/)\/+/g;
+    const url = `${this.baseUrl}/${this.path}`;
 
-    return url;
+    return url.replace(pattern, '$1');
   }
 
   setPathParams(options) {
